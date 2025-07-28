@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+python-dotenv
+pyodbc
+azure-storage-queue==12.13.0
+azure-storage-blob==12.26.0
