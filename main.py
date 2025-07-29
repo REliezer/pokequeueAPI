@@ -1,7 +1,7 @@
 import uvicorn
 import json
 from fastapi import FastAPI
-#from utils.database import execute_query_json
+from utils.database import execute_query_json
 #from controllers.PokeRequestController import insert_pokemon_request, update_pokemon_request, select_pokemon_request, get_all_request
 #from models.PokeRequest import PokemonRequest
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,16 +15,16 @@ app.add_middleware(
     allow_headers=["*"],  # Permitir todos los encabezados
 )
 
-#@app.get("/")
-#async def root():
-#    query = "select * from pokequeue.MESSAGES"
-#    result = await execute_query_json(query)
-#    result_dict = json.loads(result)
-#    return result_dict
+@app.get("/")
+async def root():
+    query = "select * from pokequeue.MESSAGES"
+    result = await execute_query_json(query)
+    result_dict = json.loads(result)
+    return result_dict
 
 @app.get("/api/version")
 async def version():
-    return { "version":  "0.0.0" }
+    return { "version":  "0.1.0" }
 
 
 #@app.get("/api/request/{id}")
