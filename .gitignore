@@ -1,5 +1,5 @@
 .vscode
-poqueAPI-env/*
+poqueAPI-env
 
 .env
 __pycache__/
@@ -10,4 +10,3 @@ __pycache__/
 __init__.py
 
 utils/ABlob.py
-utils/AQueue.py
