@@ -8,5 +8,3 @@ __pycache__/
 *.pyd
 
 __init__.py
-
-utils/ABlob.py
