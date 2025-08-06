@@ -43,14 +43,30 @@ async def update_pokemon_request( pokemon_request: PokemonRequest) -> dict:
 
 async def insert_pokemon_request( pokemon_request: PokemonRequest) -> dict:
     try:
-        query = " exec pokequeue.create_poke_request ? "
-        params = ( pokemon_request.pokemon_type,  )
+        query = " exec pokequeue.create_poke_request ?, ? "
+        params = ( 
+            pokemon_request.pokemon_type,
+            pokemon_request.sample_size,
+        )
         result = await execute_query_json( query , params, True )
-        result_dict = json.loads(result)
+        result_list = json.loads(result)
+        logger.info(f'result_list: {result_list}')
 
-        await AQueue().insert_message_on_queue( result )
-
-        return result_dict
+        if len(result_list) > 0:
+            result_dict = result_list[0]
+            # Agregar sample_size al diccionario
+            if pokemon_request.sample_size is not None:
+                result_dict["sample_size"] = pokemon_request.sample_size
+            
+            logger.info(f'result_dict with sample_size: {result_dict}')            
+            # Convertir a JSON string para la queue
+            message = json.dumps(result_dict)
+            
+            await AQueue().insert_message_on_queue( message )
+            
+            return result_dict
+        else:
+            raise ValueError("No se recibió ID de la base de datos")
     except Exception as e:
         logger.error( f"Error inserting report request {e}" )
         raise HTTPException( status_code=500 , detail="Internal Server Error" )
